@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Torta Builder</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #ffcc00;
+      text-align: center;
+    }
+    .category {
+      margin: 30px 0;
+    }
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .option {
+      background-color: #2c2c2c;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      width: 120px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00000066;
+    }
+    .option:hover {
+      background-color: #383838;
+    }
+    .option img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .option label {
+      display: block;
+      margin-top: 8px;
+    }
+    input[type="checkbox"] {
+      display: none;
+    }
+    .selected {
+      border: 2px solid #ffcc00;
+    }
+    #orders {
+      margin-top: 30px;
+      background-color: #2e2e2e;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #ffcc00;
+      color: #1e1e1e;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      width: 200px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🥪 Build Your Torta</h1>
+
+  <div class="category">
+    <h2>Veggies</h2>
+    <div class="options">
+      <div class="option"><input type="checkbox" id="lettuce"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lactuca_sativa%E7%BB%93%E7%90%83%E8%8E%B4%E8%8B%A3_%E5%8C%85%E5%BF%83%E7%94%9F%E8%8F%9C_Iceberg_lettuce1.jpg/640px-Lactuca_sativa%E7%BB%93%E7%90%83%E8%8E%B4%E8%8B%A3_%E5%8C%85%E5%BF%83%E7%94%9F%E8%8F%9C_Iceberg_lettuce1.jpg" alt="Lettuce"><label for="lettuce">Lettuce</label></div>
+      <div class="option"><input type="checkbox" id="tomato"><img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg" alt="Tomato"><label for="tomato">Tomato</label></div>
+      <div class="option"><input type="checkbox" id="avocado"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Avocado_Slices_-_50409858777.jpg/640px-Avocado_Slices_-_50409858777.jpg" alt="Avocado"><label for="avocado">Avocado</label></div>
+      <div class="option"><input type="checkbox" id="rawonions"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Chopped_onion.jpg/640px-Chopped_onion.jpg" alt="Raw Onions"><label for="rawonions">Raw Onions</label></div>
+      <div class="option"><input type="checkbox" id="grilledonions"><img src="https://www.foodabovegold.com/wp-content/uploads/2018/12/Featured-Hero-Image-How-To-Make-Caramelized-Onions.jpg" alt="Grilled Onions"><label for="grilledonions">Grilled Onions</label></div>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>Meats</h2>
+    <div class="options">
+      <div class="option"><input type="checkbox" id="ham"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0HKRzibuXexOHL_9YKaQgx0ozuqn6uDGNYQ&s" alt="Ham"><label for="ham">Ham</label></div>
+      <div class="option"><input type="checkbox" id="fajita"><img src="https://urbancowgirllife.com/wp-content/uploads/2019/05/steak-fajitas-marinade-cooked.jpg" alt="Fajita"><label for="fajita">Fajita</label></div>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>Sauces</h2>
+    <div class="options">
+      <div class="option"><input type="checkbox" id="mayo"><img src="https://i5.walmartimages.com/seo/Great-Value-Mayonnaise-30-fl-oz_e54f72db-cc48-4893-b271-f168286d4c40.961603373498e9d99e9344ddd4e65c86.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF" alt="Mayo"><label for="mayo">Mayo</label></div>
+      <div class="option"><input type="checkbox" id="beans"><img src="https://www.isabeleats.com/wp-content/uploads/2023/03/refried-beans-13.jpg" alt="Refried Beans"><label for="beans">Refried Beans</label></div>
+    </div>
+  </div>
+
+  <div>
+    <input type="text" id="nameInput" placeholder="Enter name">
+    <button onclick="submitOrder()">Submit Order</button>
+  </div>
+
+  <div id="orders">
+    <h2>Orders</h2>
+    <ul id="orderList"></ul>
+  </div>
+
+  <script>
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const checkbox = opt.querySelector('input');
+        checkbox.checked = !checkbox.checked;
+        opt.classList.toggle('selected', checkbox.checked);
+      });
+    });
+
+    function submitOrder() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return alert('Please enter a name');
+
+      const checkedItems = document.querySelectorAll('input[type="checkbox"]:checked');
+      const ingredients = Array.from(checkedItems).map(cb => cb.id);
+
+      const orderList = document.getElementById('orderList');
+      const li = document.createElement('li');
+      li.textContent = `${name}: ${ingredients.join(', ')}`;
+      orderList.appendChild(li);
+
+      // Clear selections
+      checkedItems.forEach(cb => {
+        cb.checked = false;
+        cb.closest('.option').classList.remove('selected');
+      });
+      document.getElementById('nameInput').value = '';
+    }
+  </script>
+</body>
+</html>
